@@ -1,0 +1,1 @@
+db_path = "databases/db_variant_24.db"
