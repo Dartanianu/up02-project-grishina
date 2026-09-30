@@ -1,5 +1,6 @@
 import sqlite3
 from config import db_path
+from models import Products
 
 
 def get_all_products():
@@ -8,6 +9,19 @@ def get_all_products():
     cur.execute("SELECT * FROM Товар ORDER BY id")
     products = cur.fetchall()
     conn.close()
+
+    products[]
+    for row in rows:
+        product = Products(
+            id=row[0],
+            name=row[1],
+            coach=row[2],
+            time=row[3],
+            price=row[4],
+            qty=row[5],
+            picture=row[6]
+        )
+        products.append(product)
     return products
 
 
