@@ -64,11 +64,11 @@ def get_products_low_stock():
             qty=row[5],
             picture=row[6]
         )
-        products.append(product)
     return products
 
 
 def get_trener():
+    """Список всех категорий."""
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT тренер FROM Товар ORDER BY тренер")
@@ -78,6 +78,7 @@ def get_trener():
 
 
 def print_products(products):
+    """Выводит информацию о товарах."""
     print(f"\nВсего товаров: {len(products)}\n")
     for p in products:
         print(p.info())
