@@ -1,5 +1,3 @@
-from discount import training_price_with_discont
-
 class Products:
     def __init__(self, id, name, coach, time, price, qty, picture):
         self.id = id
@@ -12,9 +10,6 @@ class Products:
 
     def total(self):
         return self.price * self.qty
-
-    def price_with_discount(self):
-        return training_price_with_discont(self)
     
     def indicator(self):
         return "много" if self.qty > 10 else "мало"

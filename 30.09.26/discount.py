@@ -25,16 +25,25 @@ def get_all_products():
 
 def apply_discount_to_best_seller(products, discount):
     if not products:
-        return None
+        return None, None, None
+    
+    
+    
     max_training = max(products, key=lambda p: p.qty)
+    
+    
+    
     old_price = max_training.price
     new_price = max_training.price * (1 - discount / 100)
     max_training.price = new_price
+    '''
     print(f"Скидка применена на: {max_training.name}")
     print(f"Старая цена: {old_price}")
     print(f"Новая цена: {new_price}")
-    return max_training
+    '''
+    return max_training, old_price, new_price
 
-
+'''
 products = get_all_products()
 apply_discount_to_best_seller(products, 25)
+'''
