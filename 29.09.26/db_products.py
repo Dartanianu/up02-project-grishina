@@ -7,10 +7,10 @@ def get_all_products():
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     cur.execute("SELECT * FROM Товар ORDER BY id")
-    products = cur.fetchall()
+    rows = cur.fetchall()
     conn.close()
 
-    products[]
+    products = []
     for row in rows:
         product = Products(
             id=row[0],
@@ -29,8 +29,21 @@ def get_products_by_category(trener):
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     cur.execute("SELECT * FROM Товар WHERE тренер = ?", (trener,))
-    products = cur.fetchall()
+    rows = cur.fetchall()
     conn.close()
+    
+    products = []
+    for row in rows:
+        product = Products(
+            id=row[0],
+            name=row[1],
+            coach=row[2],
+            time=row[3],
+            price=row[4],
+            qty=row[5],
+            picture=row[6]
+        )
+        products.append(product)
     return products
 
 
@@ -38,13 +51,24 @@ def get_products_low_stock():
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     cur.execute("SELECT * FROM Товар WHERE количество <= 9")
-    products = cur.fetchall()
+    rows = cur.fetchall()
     conn.close()
+    products = []
+    for row in rows:
+        product = Products(
+            id=row[0],
+            name=row[1],
+            coach=row[2],
+            time=row[3],
+            price=row[4],
+            qty=row[5],
+            picture=row[6]
+        )
+        products.append(product)
     return products
 
 
 def get_trener():
-    """Список всех категорий."""
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT тренер FROM Товар ORDER BY тренер")
@@ -53,36 +77,32 @@ def get_trener():
     return treners
 
 
-def print_catalog(products):
-    """Каталог с индикатором."""
-    print(f"\n{'=' * 60}")
+def print_products(products):
+    print(f"\nВсего товаров: {len(products)}\n")
+    for p in products:
+        print(p.info())
+        print("-" * 60)
+
+def print_catalog_with_highlight(products):
+    print(f"\n{'=' * 70}")
     print(f"КАТАЛОГ ({len(products)} товаров)")
-    print("=" * 60)
+    print("=" * 70)
 
     for p in products:
-        # ⚠️ Замените индексы на свои!
-        name = p[1]
-        category = p[2]
-        price = p[4]
-        qty = p[5]
+        highlight = "⚠️" if p.qty <= 9 else "  "
+        print(f"{highlight} {p.info()}")
 
-        indicator = "много" if qty > 12 else "мало"
-        highlight = "⚠️" if qty <= 9 else "  "
-
-        print(f"{highlight} {name} ({category})")
-        print(f"   Цена: {price} руб. | Кол-во: {qty} ({indicator})")
-
-    print("=" * 60)
+    print("=" * 70)
 
 
 if __name__ == "__main__":
-    print("1. Все товары")
-    print_catalog(get_all_products())
+    print("1. Все товары:")
+    print_catalog_with_highlight(get_all_products())
 
-    print("\n2. Тренеры:")
-    for cat in get_trener():
-        print(f"   - {cat}")
+    print("\n2. Товары категории «Тренер»:")
+    print_catalog_with_highlight(get_products_by_category("Ольга Морозова"))
 
     print("\n3. Товары с низким остатком (≤9):")
-    print_catalog(get_products_low_stock())
+    print_catalog_with_highlight(get_products_low_stock())
+
 

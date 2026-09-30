@@ -15,7 +15,7 @@ class Products:
         return self.price * (1 - disc_percent / 100)
 
     def indicator(self):
-        return "много" if self.qty > 5 else "мало"
+        return "много" if self.qty > 10 else "мало"
 
     def info(self):
         return (
