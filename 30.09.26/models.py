@@ -27,9 +27,9 @@ class Products:
 
     
 class Order:
-    def __init__(self, id, data, client, product, qty):
+    def __init__(self, id, date, client, product, qty):
         self.id = id
-        self.data = data
+        self.date = date
         self.client = client
         self.product = product
         self.qty = qty
@@ -38,4 +38,7 @@ class Order:
         return self.product.price * self.qty
 
     def info(self):
-        return f"Заказ №{self.id} от {self.data}: {self.client} - {self.product.name} x {self.qty}"
+        return f"Заказ №{self.id} от {self.date}: {self.client} - {self.product.name} x {self.qty}"
+    
+    def order_info(self):
+        return f"Заказ №{self.id} от {self.date}: {self.client}"
