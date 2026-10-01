@@ -15,7 +15,7 @@ class Products:
         return "много" if self.qty > 10 else "мало"
     
     def is_avaible(self):
-        return self.qty > 0
+        return self.qty >= 0
 
     def info(self):
         return (
