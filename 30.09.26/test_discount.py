@@ -1,4 +1,5 @@
-from discount import apply_discount_to_best_seller
+from datetime import datetime, timedelta
+from discount import apply_discount_to_best_seller, apply_discount_to_any_orders
 
 
 class Testing:
@@ -7,6 +8,18 @@ class Testing:
         self.name = name
         self.price = price
         self.qty = qty
+
+class Order:
+    def __init__(self, product_id, date):
+        self.product_id = product_id
+        self.date = date
+
+
+CURRENT = datetime(2024, 6, 15)
+MAY_START = datetime(2024, 5, 1)
+MAY_END = datetime(2024, 5, 31, 23, 59)
+APRIL = datetime(2024, 4, 15)
+JUNE = datetime(2024, 6, 5)
 
 
 def print_test_report(passed, total):
@@ -194,6 +207,189 @@ def run_test():
 
     print_test_report(passed, len(test_cases))
 
+def run_test_orders():
+    test_cases = [
+        # 1.
+        (
+            [
+                Testing(1, "Йога", 1000, 50),
+                Testing(2, "Кроссфит", 9000, 3),
+            ],
+            [Order(1, datetime(2024, 5, 10))],
+            "Кроссфит", 9000, 6750
+        ),
+        # 2.
+        (
+            [
+                Testing(3, "Бокс", 10000, 1),
+                Testing(4, "Плавание", 500, 30),
+            ],
+            [Order(3, datetime(2024, 6, 5))],
+            "Плавание", 500, 375
+        ),
+
+        # 3. Заказ в апреле (не прошлый месяц) не исключает
+        (
+            [
+                Testing(5, "Пилатес", 8000, 20),
+                Testing(6, "Танцы", 100, 5),
+            ],
+            [Order(5, datetime(2024, 4, 15))],
+            "Пилатес", 8000, 6000
+        ),
+
+        # 4. Все товары заказаны в прошлом месяце — None
+        (
+            [
+                Testing(7, "Йога", 1000, 10),
+                Testing(8, "Бокс", 2000, 20),
+            ],
+            [
+                Order(7, datetime(2024, 5, 1)),
+                Order(8, datetime(2024, 5, 31, 23, 59)),
+            ],
+            None, None, None
+        ),
+
+        # 5. Граница прошлого месяца: 1 мая 00:00 — исключает
+        (
+            [
+                Testing(9, "Йога", 1000, 10),
+                Testing(10, "Бокс", 2000, 20),
+            ],
+            [Order(9, datetime(2024, 5, 1, 0, 0))],
+            "Бокс", 2000, 1500
+        ),
+
+        # 6. Граница прошлого месяца: 31 мая 23:59 — исключает
+        (
+            [
+                Testing(11, "Йога", 1000, 10),
+                Testing(12, "Бокс", 2000, 20),
+            ],
+            [Order(11, datetime(2024, 5, 31, 23, 59))],
+            "Бокс", 2000, 1500
+        ),
+
+        # 7. Граница текущего месяца: 1 июня 00:00 — НЕ исключает
+        (
+            [
+                Testing(13, "Йога", 1000, 10),
+                Testing(14, "Бокс", 2000, 20),
+            ],
+            [Order(13, datetime(2024, 6, 1, 0, 0))],
+            "Йога", 1000, 750
+        ),
+
+        # 8. Пустой список заказов — выбирается максимальный qty
+        (
+            [
+                Testing(15, "Йога", 1000, 10),
+                Testing(16, "Бокс", 2000, 30),
+                Testing(17, "Танцы", 300, 20),
+            ],
+            [],
+            "Бокс", 2000, 1500
+        ),
+
+        # 9. Пустой список товаров — None
+        (
+            [],
+            [Order(1, datetime(2024, 5, 10))],
+            None, None, None
+        ),
+
+        # 10. Заказ на несуществующий product_id — игнорируется
+        (
+            [
+                Testing(18, "Йога", 1000, 10),
+                Testing(19, "Бокс", 2000, 20),
+            ],
+            [Order(999, datetime(2024, 5, 10))],
+            "Бокс", 2000, 1500
+        ),
+
+        # 11. Несколько заказов в прошлом месяце — исключаются все
+        (
+            [
+                Testing(20, "Йога", 1000, 100),
+                Testing(21, "Бокс", 2000, 80),
+                Testing(22, "Танцы", 300, 50),
+            ],
+            [
+                Order(20, datetime(2024, 5, 5)),
+                Order(21, datetime(2024, 5, 20)),
+            ],
+            "Танцы", 300, 225
+        ),
+
+        # 12. Один и тот же товар заказан несколько раз в прошлом месяце
+        (
+            [
+                Testing(23, "Йога", 1000, 100),
+                Testing(24, "Бокс", 2000, 10),
+            ],
+            [
+                Order(23, datetime(2024, 5, 1)),
+                Order(23, datetime(2024, 5, 15)),
+                Order(23, datetime(2024, 5, 31)),
+            ],
+            "Бокс", 2000, 1500
+        ),
+
+        # 13. Скидка 0% — цена не меняется
+        (
+            [
+                Testing(25, "Йога", 1000, 10),
+                Testing(26, "Бокс", 2000, 20),
+            ],
+            [],
+            "Бокс", 2000, 2000
+        ),
+    ]
+
+    print("=" * 60)
+    print("ТЕСТИРОВАНИЕ АЛГОРИТМА СКИДКИ ДЛЯ ТРЕНИРОВОК, КОТОРЫХ НЕ БЫЛО В ЗАКАЗАХ ПРОШЛОГО МЕСЯЦА")
+    print("=" * 60)
+
+    passed = 0
+    discount = 25 # Фиксированная скидка
+
+    for products, orders, expected_name, expected_old, expected_new in test_cases:
+        import copy
+        products_copy = copy.deepcopy(products)
+
+        result = apply_discount_to_any_orders(
+            products_copy, orders, discount, current_date=CURRENT
+        )
+
+        # result — это кортеж (best, old_price, new_price)
+        best, old_price, new_price = result if result else (None, None, None)
+
+        ok = (
+            (best is None and expected_name is None)
+            or (
+                best is not None
+                and expected_name is not None
+                and best.name == expected_name
+                and old_price == expected_old
+                and new_price == expected_new
+            )
+        )
+
+        status = "✅" if ok else "❌"
+        if ok:
+            passed += 1
+
+        print(
+            f"{status} Ожидалось: {expected_name}, "
+            f"старая {expected_old}, новая {expected_new} | "
+            f"Получено: {best.name if best else 'None'}, "
+            f"старая {old_price}, новая {new_price}"
+        )
+
+    print_test_report(passed, len(test_cases))
+
 
 if __name__ == "__main__":
-    run_test()
+    run_test_orders()
