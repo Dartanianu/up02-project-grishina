@@ -1,7 +1,8 @@
 import sqlite3
 
-conn = sqlite3.connect('db_variant_24.db')
+conn = sqlite3.connect('databases/db_variant_24.db')
 cursor = conn.cursor()
+cursor.execute('PRAGMA foreign_keys = ON')
 
 
 # Добавление данных для Тестировки
@@ -29,3 +30,6 @@ cursor.executemany(
     'INSERT INTO Заказ (дата, клиент, товар_id, количество) VALUES (?, ?, ?, ?)',
     orders
 )
+
+conn.commit()
+conn.close()
