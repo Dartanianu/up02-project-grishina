@@ -1,0 +1,29 @@
+* aee14d1 (HEAD -> main, origin/main, origin/HEAD) Пара 9: .gitignore и история
+коммитов
+* e624aef Пара 9: .gitignore и история коммитов
+* 6b10d52 Добавлен important.txt, а лог и Tmp проигнорированы
+* 785c818 Добавлен .gitignore с правилами для Python
+* 9d567f9 Рабочая тетрадь 8
+* 14a3fb9 Дз: работа с удаленным репозиторием
+*   9dee278 Исправление конфликта README.md
+|\
+| * df3af69 Измнение в GitHub README.md
+| *   777a58c Merge pull request #2 from Dartanianu/feature/homework-8
+| |\
+| | * a27c9f6 (origin/feature/homework-8, feature/homework-8) ДЗ: 8 работа
+| |/
+* / eb191fa Измнение README.md VS Code
+|/
+*   d0d3a93 Разрешен конфликт с Github
+|\
+| * 2cf79d7 Update README.md
+| * d3093fa Изменение README.md
+* | 1d256c3 Локальное изменение README
+|/
+*   e4bae14 Merge pull request #1 from Dartanianu/feature/remote-test
+|\
+| * 11e6dd6 (origin/feature/remote-test) Добавлен файл в ветке remote-test
+|/
+* a9808d5 Изменение файла README.md через сайт
+* b0d4aaa Изменен метод is_avaible
+* 66d7139 ДЗ: работа с ветками и конфликтами
