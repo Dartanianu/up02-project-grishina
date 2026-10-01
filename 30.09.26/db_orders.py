@@ -49,7 +49,6 @@ def print_orders(orders):
         print("-" * 60)
 
 
-
 if __name__ == "__main__":
     print("1. Все товары:")
     print_orders(get_all_orders())

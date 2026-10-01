@@ -1,11 +1,23 @@
 from discount import apply_discount_to_best_seller
 
+
 class Testing:
     def __init__(self, id, name, price, qty):
         self.id = id
         self.name = name
         self.price = price
         self.qty = qty
+
+
+def print_test_report(passed, total):
+    print("=" * 40)
+    print("ОТЧЁТ О ТЕСТИРОВАНИИ")
+    print(f"Пройдено: {passed} / {total}")
+    if passed == total:
+        print("Результат: ✅ УСПЕХ")
+    else:
+        print("Результат: ❌ НЕУДАЧА")
+    print("=" * 40)
         
 
 def run_test():
@@ -179,6 +191,8 @@ def run_test():
             f"Получено: {training.name if training else 'None'}, "
             f"старая цена {old_price}, новая цена {new_price}"
         )
+
+    print_test_report(passed, len(test_cases))
 
 
 if __name__ == "__main__":

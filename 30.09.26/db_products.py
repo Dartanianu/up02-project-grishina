@@ -84,6 +84,7 @@ def print_products(products):
         print(p.info())
         print("-" * 60)
 
+
 def print_catalog_with_highlight(products):
     print(f"\n{'=' * 70}")
     print(f"КАТАЛОГ ({len(products)} товаров)")

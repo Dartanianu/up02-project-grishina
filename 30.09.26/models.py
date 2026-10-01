@@ -24,7 +24,8 @@ class Products:
             f"Длительность {self.time}."
             f"({self.indicator()})"
         )
-        
+
+    
 class Order:
     def __init__(self, id, data, client, product, qty):
         self.id = id
