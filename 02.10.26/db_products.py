@@ -1,10 +1,10 @@
 import sqlite3
-from config import db_path
+from config import DB_PATH
 from models import Products
 
 
 def get_all_products():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT * FROM Товар ORDER BY id")
     rows = cur.fetchall()
