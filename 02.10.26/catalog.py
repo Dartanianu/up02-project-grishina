@@ -6,6 +6,7 @@ import os
 from config import db_path, color_highlight, font_family
 import databases as db
 
+
 def create_product_card(parent, product):
     qty = product.qty
     bg_color = color_highlight if qty <= 3 else "white"
@@ -40,10 +41,10 @@ def create_product_card(parent, product):
              bg=bg_color, anchor="w").pack(fill="x")
 
     # Количество
-    indicator = "много" if qty > 10 else "мало"
-    color = "#2e7d32" if qty > 10 else "#c62828"
+    indicator = "много" if qty >= 10 else "мало"
+    bg_color_ind = "#ff8080" if qty < 10 else "white"
     tk.Label(text_frame, text=f"Количество: {indicator} ({qty})",
-             font=(font_family, 11), bg=bg_color, fg=color, anchor="w").pack(fill="x")
+             font=(font_family, 11), bg=bg_color_ind, anchor="w").pack(fill="x")
     
     # Длительность
     tk.Label(text_frame, text=f"{product.time} минут.",
@@ -53,6 +54,9 @@ def create_product_card(parent, product):
     tk.Label(text_frame, text=f"{product.price} руб.",
              font=(font_family, 14, "bold"),
              bg=bg_color, anchor="e").pack(fill="x")
+    
+    separator = ttk.Separator(parent, orient="horizontal")
+    separator.pack(fill="x", padx=10, pady=2)
 
     return card
 

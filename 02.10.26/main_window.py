@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 import os
+from PIL import Image, ImageTk
 from config import app_title, font_family
-import os
 import db_products as db
 from catalog import create_product_card
 
@@ -20,6 +20,11 @@ class CatalogWindow:
         # Заголовок
         header = tk.Frame(self.root, bg="#D2F6E7")
         header.pack(fill="x")
+
+        logo = Image.open("resources/logo.png").resize((50, 50))
+        self.logo_photo = ImageTk.PhotoImage(logo)
+        tk.Label(header, image=self.logo_photo, bg="#D2F6E7").pack(side="left", padx=10)
+
         tk.Label(header, text="КАТАЛОГ ТОВАРОВ",
                  font=(font_family, 16, "bold"),
                  bg="#D2F6E7").pack(pady=15)
