@@ -30,27 +30,26 @@ cursor.executemany(
     'INSERT INTO Заказ (дата, клиент, товар_id, количество) VALUES (?, ?, ?, ?)',
     orders
 )
+'''
 
 # Изменение типа данных атрибута Фото
 cursor.execute('ALTER TABLE Товар DROP COLUMN фото')
-cursor.execute('ALTER TABLE Товар ADD COLUMN фото LONGBLOB NULL')
+cursor.execute('ALTER TABLE Товар ADD COLUMN фото VARCHAR(30) NULL')
 
 # Добавление фото в опред строки
 pictures = {
-    1: 'pictures/yoga.png',
-    2: 'pictures/fitness.png',
-    3: 'pictures/boxing.png',
-    5: 'pictures/crossfit.png',
-    6: 'pictures/pilates.png',
-    8: 'pictures/volleyball.png',
-    9: 'pictures/football.png'
+    1: 'yoga.png',
+    2: 'fitness.png',
+    3: 'boxing.png',
+    5: 'crossfit.png',
+    6: 'pilates.png',
+    8: 'volleyball.png',
+    9: 'football.png'
 }
 
 for user_id, path in pictures.items():
-    with open(path, 'rb') as f:
-        data = f.read()
-    cursor.execute("UPDATE Товар SET фото = ? WHERE id = ?", (data, user_id))
-'''
+    cursor.execute("UPDATE Товар SET фото = ? WHERE id = ?", (path, user_id))
+
 
 conn.commit()
 conn.close()
