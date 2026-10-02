@@ -40,9 +40,10 @@ def create_product_card(parent, product):
              bg=bg_color, anchor="w").pack(fill="x")
 
     # Количество
-    indicator = "много" if qty > 5 else "мало"
+    indicator = "много" if qty > 10 else "мало"
+    color = "#2e7d32" if qty > 10 else "#c62828"
     tk.Label(text_frame, text=f"Количество: {indicator} ({qty})",
-             font=(font_family, 11), bg=bg_color, anchor="w").pack(fill="x")
+             font=(font_family, 11), bg=bg_color, fg=color, anchor="w").pack(fill="x")
     
     # Длительность
     tk.Label(text_frame, text=f"{product.time} минут.",
