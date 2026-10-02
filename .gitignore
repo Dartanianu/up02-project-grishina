@@ -29,7 +29,6 @@ Thumbs.db
 *.log
 
 # Базы данных
-*.db
 *.sqlite
 *.sqlite3
 *.db-journal
