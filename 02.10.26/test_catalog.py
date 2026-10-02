@@ -23,6 +23,21 @@ def test_fields():
     else:
         print(f"❌ Найдено ошибок: {errors}")
 
+def test_prices():
+    """Проверяет, что у всех товаров есть цена."""
+    products = db_products.get_all_products()
+    errors = 0
+    for p in products:
+        # У объекта Products обращаемся через точку
+        if p.price is None or p.price <= 0:
+            print(f"❌ Товар id={p.id}: нет цены")
+            errors += 1
+    if errors == 0:
+        print("✅ У всех товаров есть цена")
+    else:
+        print(f"❌ Найдено товаров без цены: {errors}")
+
 
 if __name__ == "__main__":
     test_fields()
+    test_prices()
