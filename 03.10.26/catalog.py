@@ -47,10 +47,11 @@ def _add_text_info(card, product, bg_color, qty):
     time = product.time if product.time else "[Без времени]"
     price = product.price if product.price is not None else 0
 
-    
+
+    indicator = _indicator(qty)
     _add_label(text_frame, f"{name} | {coach}",bg_color, bold=True, size=FONT_SIZE_HEADER)
     _add_label(text_frame, f"Длительность: {time} мин.", bg_color)
-    _add_label(text_frame, f"Количество: {_indicator(qty)} ({qty})", bg_color)
+    _add_label(text_frame, f"Количество: {indicator} ({qty})", bg_color)
     _add_label(text_frame, f"{price} руб.",bg_color, bold=True, size=FONT_SIZE_HEADER, align="e")
 
 
@@ -60,5 +61,5 @@ def _add_label(parent, text, bg_color, bold=False, size=FONT_SIZE_NORMAL, align=
 
 
 def _indicator(qty):
-    return "много" if qty > 5 else "мало"
+    return "много" if qty > 10 else "мало"
 

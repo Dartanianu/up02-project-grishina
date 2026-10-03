@@ -1,6 +1,6 @@
 import databases as db
 import db_products
-
+from catalog import _indicator
 
 def test_fields():
     """Проверяет, что все поля на месте."""
@@ -38,6 +38,40 @@ def test_prices():
         print(f"❌ Найдено товаров без цены: {errors}")
 
 
+def test_indicator():
+    """Прогон тестов для индикатора."""
+    test_cases = [
+        # (qty, expected, comment)
+        (29, "много", "20 > 10"),
+        (10, "мало", "10 >= 10 (граница)"),
+        (9, "мало", "9 ≤ 10 (граница)"),
+        (4, "мало", "4 ≤ 10"),
+        (1, "мало", "1 ≤ 10"),
+        (0, "мало", "0 ≤ 10"),
+        (100, "много", "большое число"),
+    ]
+
+    print("=" * 60)
+    print("ТЕСТИРОВАНИЕ ИНДИКАТОРА")
+    print("=" * 60)
+
+    passed = 0
+    for qty, expected, comment in test_cases:
+        result = _indicator(qty)
+        status = "✅" if result == expected else "❌"
+        if result == expected:
+            passed += 1
+        print(f"{status} qty={qty}: {result} (ожидалось {expected}) — {comment}")
+
+    print("=" * 60)
+    print(f"Пройдено: {passed} / {len(test_cases)}")
+
+        
+
+
 if __name__ == "__main__":
+    '''
     test_fields()
     test_prices()
+    '''
+    test_indicator()
