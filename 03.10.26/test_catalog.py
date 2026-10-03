@@ -1,6 +1,7 @@
 import databases as db
 import db_products
-from catalog import _indicator
+from catalog import _indicator, _get_card_color
+from styles import COLOR_HIGHLIGHT, COLOR_MAIN_BG
 
 def test_fields():
     """Проверяет, что все поля на месте."""
@@ -70,6 +71,37 @@ def test_indicator():
     print("=" * 60)
     print(f"Пройдено: {passed} / {len(test_cases)}")
 
+
+def test_highlight():
+    """Прогон тестов для подсветки."""
+    test_cases = [
+        # (qty, expected_color, comment)
+        (12, COLOR_MAIN_BG, "12 > 10 — нет подсветки"),
+        (11, COLOR_MAIN_BG, "11 > 10 — нет подсветки"),
+        (20, COLOR_MAIN_BG, "20 > 10 — нет подсветки"),
+        (10, COLOR_HIGHLIGHT, "10 ≤ 10 — подсветка (граница)"),
+        (9, COLOR_HIGHLIGHT, "9 ≤ 10 — подсветка"),
+        (2, COLOR_HIGHLIGHT, "2 ≤ 10 — подсветка"),
+        (0, COLOR_HIGHLIGHT, "0 ≤ 10 — подсветка"),
+    ]
+
+    print("=" * 70)
+    print("ТЕСТИРОВАНИЕ ПОДСВЕТКИ")
+    print("=" * 70)
+
+    passed = 0
+    for qty, expected, comment in test_cases:
+        result = _get_card_color(qty)
+        status = "✅" if result == expected else "❌"
+        if result == expected:
+            passed += 1
+        print(f"{status} qty={qty}: {result} "
+              f"(ожидалось {expected}) — {comment}")
+
+    print("=" * 70)
+    print(f"Пройдено: {passed} / {len(test_cases)}")
+
+
         
 
 
@@ -77,5 +109,6 @@ if __name__ == "__main__":
     '''
     test_fields()
     test_prices()
-    '''
     test_indicator()
+    '''
+    test_highlight()

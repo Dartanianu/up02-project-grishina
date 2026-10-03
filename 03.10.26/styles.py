@@ -34,3 +34,5 @@ def make_button(parent, text, command):
         activebackground=COLOR_ACCENT,
         cursor="hand2"
     )
+
+
