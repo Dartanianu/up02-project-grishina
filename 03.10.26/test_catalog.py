@@ -83,6 +83,9 @@ def test_highlight():
         (9, COLOR_HIGHLIGHT, "9 ≤ 10 — подсветка"),
         (2, COLOR_HIGHLIGHT, "2 ≤ 10 — подсветка"),
         (0, COLOR_HIGHLIGHT, "0 ≤ 10 — подсветка"),
+        (1000, COLOR_MAIN_BG, "1000 > 10 — нет подсветки"),
+        (-1, COLOR_HIGHLIGHT, "-1 ≤ 10 — отриц, подсветка"),
+        (10, COLOR_HIGHLIGHT, "0 ≤ 10 — повтор границы"),
     ]
 
     print("=" * 70)
