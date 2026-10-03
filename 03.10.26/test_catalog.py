@@ -113,5 +113,5 @@ if __name__ == "__main__":
     test_fields()
     test_prices()
     test_indicator()
-    '''
     test_highlight()
+    '''
