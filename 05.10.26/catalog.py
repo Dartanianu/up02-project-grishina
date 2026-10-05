@@ -23,7 +23,7 @@ def create_product_card(parent, product):
     _add_text_info(card, product, bg_color, qty)
 
 def _get_card_color(qty):
-    return COLOR_HIGHLIGHT if qty <= 10 else COLOR_MAIN_BG
+    return COLOR_HIGHLIGHT if qty <= 5 else COLOR_MAIN_BG
 
 def _add_image(card, product, bg_color):
     # изображение (слева)
