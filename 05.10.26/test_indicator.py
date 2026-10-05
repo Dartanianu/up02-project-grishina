@@ -7,7 +7,7 @@ def test_indicator():
         (5, "мало", "5 <= 10"),
         (4, "мало", "4 <= 10"),
         (0, "мало", "0 <= 10"),
-        (100, "много", "100 <= 10"),
+        (100, "много", "100 > 10"),
         (1, "мало", "мин > 0"),
         (-1, "мало", "отриц число(крайний случай"),
     ]
@@ -27,5 +27,22 @@ def test_indicator():
     print("=" * 60)
     print(f"Пройдено: {passed} / {len(test_cases)}")
     
+    print("=" * 60)
+    print("Тесты индикатора")
+    print("=" * 60)
+    
+    ind_cases = [
+        (None,      "None — не число"),
+        ("10",      "строка вместо числа"),
+        (0.5,       "дробное число"),
+    ]
+    
+    for qty, comment in ind_cases:
+        try:
+            result = _indicator(qty)
+            print(f"⚠️  qty={qty!r}: вернул {result!r} — {comment}")
+        except Exception as e:
+            print(f"❗ qty={qty!r}: выброшено {type(e).__name__}: {e} — {comment}")
+        
 if __name__ == "__main__":
     test_indicator()
