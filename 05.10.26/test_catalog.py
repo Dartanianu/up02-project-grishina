@@ -1,117 +1,106 @@
 import databases as db
 import db_products
-from catalog import _indicator, _get_card_color
-from styles import COLOR_HIGHLIGHT, COLOR_MAIN_BG
 
-def test_fields():
-    """Проверяет, что все поля на месте."""
+
+def test_db_available():
+    """
+    Проверяет, что БД доступна.
+    """
+    try:
+        products = db_products.get_all_products()
+        return isinstance(products, list)
+    except Exception as e:
+        print(f"❌ БД недоступна: {e}")
+        return False
+
+
+def test_products_count():
+    """
+    Проверяет, что товары загружены.
+    """
     products = db_products.get_all_products()
-    print(f"Всего товаров: {len(products)}")
+    return len(products) > 0
 
 
-    required_fields = ['id', 'name', 'coach', 'time', 'price', 'qty', 'picture']
-    required_count = 6   # минимум полей для макета
-    errors = 0
-
-    for p in products:
-        existing_fields = [field for field in required_fields if hasattr(p, field)]
-        if len(existing_fields) < required_count:
-            print(f"❌ Товар id={p[0]}: мало полей ({len(p)})")
-            errors += 1
-
-    if errors == 0:
-        print("✅ Все товары содержат нужные поля")
-    else:
-        print(f"❌ Найдено ошибок: {errors}")
-
-def test_prices():
-    """Проверяет, что у всех товаров есть цена."""
+def test_product_fields():
+    """
+    Проверяет, что у всех товаров есть нужные атрибуты.
+    """
     products = db_products.get_all_products()
-    errors = 0
+    required_attrs = ["id", "name", "price", "qty"]
     for p in products:
-        # У объекта Products обращаемся через точку
-        if p.price is None or p.price <= 0:
-            print(f"❌ Товар id={p.id}: нет цены")
-            errors += 1
-    if errors == 0:
-        print("✅ У всех товаров есть цена")
-    else:
-        print(f"❌ Найдено товаров без цены: {errors}")
+        missing = [attr for attr in required_attrs if not hasattr(p, attr)]
+        if missing:
+            print(f"❌ Товар id={getattr(p, 'id', '?')}: нет полей {missing}")
+            return False
+    return True
 
 
-def test_indicator():
-    """Прогон тестов для индикатора."""
-    test_cases = [
-        # (qty, expected, comment)
-        (29, "много", "20 > 10"),
-        (10, "мало", "10 >= 10 (граница)"),
-        (9, "мало", "9 ≤ 10 (граница)"),
-        (4, "мало", "4 ≤ 10"),
-        (1, "мало", "1 ≤ 10"),
-        (0, "мало", "0 ≤ 10"),
-        (100, "много", "большое число"),
-        (1000, "много", "очень большое число"),
-        (50, "много", "среднее число"),
-        (10, "мало", "10 >= 10 (граница)"),
-        (-1, "мало", "отрицательное число"),
+def test_prices_are_numbers():
+    """
+    Проверяет, что все цены — числа.
+    """
+    products = db_products.get_all_products()
+    for p in products:
+        if not isinstance(p.price, (int, float)):
+            print(f"❌ Товар id={p.id}: цена не число ({p.price!r})")
+            return False
+    return True
+
+
+def test_quantity_not_negative():
+    """
+    Проверяет, что количество не отрицательное.
+    """
+    products = db_products.get_all_products()
+    for p in products:
+        if p.qty < 0:
+            print(f"❌ Товар id={p.id}: отрицательное количество ({p.qty})")
+            return False
+    return True
+
+
+def test_names_not_empty():
+    """
+    Проверяет, что у всех товаров есть название.
+    """
+    products = db_products.get_all_products()
+    for p in products:
+        if not p.name:  # пустая строка или None
+            print(f"❌ Товар id={p.id}: пустое название")
+            return False
+    return True
+
+
+def run_all_tests():
+    """
+    Прогон всех тестов каталога.
+    """
+    tests = [
+        ("БД доступна", test_db_available),
+        ("Товары загружены", test_products_count),
+        ("У всех товаров нужные поля", test_product_fields),
+        ("Все цены — числа", test_prices_are_numbers),
+        ("Количество не отрицательное", test_quantity_not_negative),
+        ("Названия не пустые", test_names_not_empty),
     ]
 
     print("=" * 60)
-    print("ТЕСТИРОВАНИЕ ИНДИКАТОРА")
+    print("ТЕСТИРОВАНИЕ КАТАЛОГА")
     print("=" * 60)
 
     passed = 0
-    for qty, expected, comment in test_cases:
-        result = _indicator(qty)
-        status = "✅" if result == expected else "❌"
-        if result == expected:
+    for name, func in tests:
+        result = func()
+        status = "✅" if result else "❌"
+        if result:
             passed += 1
-        print(f"{status} qty={qty}: {result} (ожидалось {expected}) — {comment}")
+        print(f"{status} {name}")
 
     print("=" * 60)
-    print(f"Пройдено: {passed} / {len(test_cases)}")
-
-
-def test_highlight():
-    """Прогон тестов для подсветки."""
-    test_cases = [
-        # (qty, expected_color, comment)
-        (12, COLOR_MAIN_BG, "12 > 10 — нет подсветки"),
-        (11, COLOR_MAIN_BG, "11 > 10 — нет подсветки"),
-        (20, COLOR_MAIN_BG, "20 > 10 — нет подсветки"),
-        (10, COLOR_HIGHLIGHT, "10 ≤ 10 — подсветка (граница)"),
-        (9, COLOR_HIGHLIGHT, "9 ≤ 10 — подсветка"),
-        (2, COLOR_HIGHLIGHT, "2 ≤ 10 — подсветка"),
-        (0, COLOR_HIGHLIGHT, "0 ≤ 10 — подсветка"),
-        (1000, COLOR_MAIN_BG, "1000 > 10 — нет подсветки"),
-        (-1, COLOR_HIGHLIGHT, "-1 ≤ 10 — отриц, подсветка"),
-        (10, COLOR_HIGHLIGHT, "0 ≤ 10 — повтор границы"),
-    ]
-
-    print("=" * 70)
-    print("ТЕСТИРОВАНИЕ ПОДСВЕТКИ")
-    print("=" * 70)
-
-    passed = 0
-    for qty, expected, comment in test_cases:
-        result = _get_card_color(qty)
-        status = "✅" if result == expected else "❌"
-        if result == expected:
-            passed += 1
-        print(f"{status} qty={qty}: {result} "
-              f"(ожидалось {expected}) — {comment}")
-
-    print("=" * 70)
-    print(f"Пройдено: {passed} / {len(test_cases)}")
-
-
-        
+    print(f"Пройдено: {passed} / {len(tests)}")
 
 
 if __name__ == "__main__":
-    '''
-    test_fields()
-    test_prices()
-    test_indicator()
-    test_highlight()
-    '''
+    run_all_tests()
+

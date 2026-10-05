@@ -28,8 +28,8 @@ def get_all_products():
 
 
 def get_products_by_category(trener):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
+    conn = sqlite3.connect()
+    cur = conn.cursor(DB_PATH)
     cur.execute("SELECT * FROM Товар WHERE тренер = ?", (trener,))
     rows = cur.fetchall()
     conn.close()
@@ -50,7 +50,7 @@ def get_products_by_category(trener):
 
 
 def get_products_low_stock():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT * FROM Товар WHERE количество <= 9")
     rows = cur.fetchall()
@@ -71,7 +71,7 @@ def get_products_low_stock():
 
 def get_trener():
     """Список всех категорий."""
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT тренер FROM Товар ORDER BY тренер")
     treners = [row[0] for row in cur.fetchall()]
