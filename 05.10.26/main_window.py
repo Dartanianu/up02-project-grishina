@@ -7,6 +7,7 @@ from styles import COLOR_SECONDARY_BG, FONT_FAMILY, FONT_SIZE_TITLE, font
 import db_products as db
 from catalog import create_product_card
 from resources import load_image_proportional, PATH_LOGO, PATH_ICON
+from error_handler import safe_call
 
 
 class CatalogWindow:
@@ -93,7 +94,7 @@ class CatalogWindow:
     def load_products(self):
         products = db.get_all_products()
         for p in products:
-            create_product_card(self.catalog_frame, p)
+            safe_call(create_product_card, self.catalog_frame, p)
 
     def run(self):
         self.root.mainloop()

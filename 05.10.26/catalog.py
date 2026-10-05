@@ -4,12 +4,16 @@ from PIL import Image, ImageTk
 import os
 from styles import (
     COLOR_MAIN_BG, COLOR_HIGHLIGHT,
-    FONT_FAMILY, FONT_SIZE_NORMAL, FONT_SIZE_HEADER, font
+    FONT_FAMILY, FONT_SIZE_NORMAL, FONT_SIZE_HEADER, COLOR_ACCENT, font
 )
 from config import DB_PATH
 from resources import get_product_image
 import databases as db
 
+
+def _open_view(parent, product):
+    from view_form import ViewForm
+    ViewForm(parent, product)
 
 def create_product_card(parent, product):
     qty = product.qty
@@ -21,6 +25,13 @@ def create_product_card(parent, product):
     
     _add_image(card, product, bg_color)
     _add_text_info(card, product, bg_color, qty)
+    
+    card.bind("<Button-1>", lambda e: _open_view(parent, product))
+    for child in card.winfo_children():
+        child.bind("<Button-1>", lambda e: _open_view(parent, product))
+    
+    return card
+    
 
 def _get_card_color(qty):
     return COLOR_HIGHLIGHT if qty <= 5 else COLOR_MAIN_BG
@@ -38,7 +49,7 @@ def _add_image(card, product, bg_color):
     else:
         tk.Label(img_frame, text="[НЕТ ФОТО]", bg=bg_color, width=10, height=5).pack()
 
-def _add_text_info(card, product, bg_color, qty):
+def _add_text_info(card, product, bg_color, qty, on_view=None):
     text_frame = tk.Frame(card, bg=bg_color)
     text_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
     
