@@ -121,7 +121,7 @@ class ViewForm:
                 return
             
             new_qty = qty_now - qty
-            add_order_to_db("Иванов Иван Иванович", product_id, 1)
+            add_order_to_db("Иванов Иван Иванович")
             update_product_quantity(product_id, new_qty)
             
             messagebox.showinfo("Успех", "Заказ оформлен")
