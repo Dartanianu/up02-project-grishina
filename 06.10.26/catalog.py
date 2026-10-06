@@ -12,7 +12,6 @@ import databases as db
 
 
 def _open_view(parent, product, refresh=None):
-    import view_form
     from view_form import ViewForm
     ViewForm(parent, product, on_add_to_order=refresh)
 
