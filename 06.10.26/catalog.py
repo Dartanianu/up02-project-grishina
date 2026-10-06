@@ -11,24 +11,29 @@ from resources import get_product_image
 import databases as db
 
 
-def _open_view(parent, product):
+def _open_view(parent, product, refresh=None):
+    import view_form
     from view_form import ViewForm
-    ViewForm(parent, product)
+    ViewForm(parent, product, on_add_to_order=refresh)
 
-def create_product_card(parent, product):
+def create_product_card(parent, product, refresh=None):
     qty = product.qty
     bg_color = _get_card_color(qty)
 
     # карточка
     card = tk.Frame(parent, bg=bg_color, bd=1, relief="solid")
     card.pack(fill="x", padx=10, pady=5)
+    card.bind("<Button-1>", lambda e: _open_view(parent, product, refresh))
     
     _add_image(card, product, bg_color)
     _add_text_info(card, product, bg_color, qty)
     
-    card.bind("<Button-1>", lambda e: _open_view(parent, product))
-    for child in card.winfo_children():
-        child.bind("<Button-1>", lambda e: _open_view(parent, product))
+    def _bind_recursive(widget):
+        widget.bind("Button-1", lambda e: _open_view(parent, product, refresh))
+        for child in widget.winfo_children():
+            _bind_recursive(child)
+    
+    _bind_recursive(card)
     
     return card
     

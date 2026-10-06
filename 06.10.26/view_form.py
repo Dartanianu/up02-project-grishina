@@ -6,7 +6,14 @@ from styles import (
     FONT_SIZE_NORMAL, FONT_SIZE_HEADER, FONT_SIZE_TITLE, FONT_FAMILY, font
 )
 from resources import load_image, get_product_image
-from error_handler import validate_positive_int, safe_call
+from error_handler import validate_positive_int
+
+from order_manager import (
+    add_order_to_db, 
+    update_product_quantity, 
+    get_product_quantity
+)
+
 
 
 class ViewForm:
@@ -95,16 +102,28 @@ class ViewForm:
             return
         qty = result
         
-        if self.on_add_to_order is None:
-            messagebox.showinfo("Информация", "В разаботке")
-            return
-
-        if self.product is None:
+        if not self.product:
             messagebox.showerror("Ошибка", "Товар не выбран")
             return
-
+        
         try:
-            self.on_add_to_order(self.product)
-            messagebox.showinfo("Успех", "Товар добавлен в заказ")
+            product_id = self.product.id
+            qty_now = get_product_quantity(product_id)
+
+            if qty_now < 1:
+                messagebox.showwarning("Внимание", "Товар закончился")
+                return
+            if qty > qty_now:
+                messagebox.showwarning("Внимание", f"В наличии только {qty_now} шт.")
+                return
+            
+            new_qty = qty_now - 1
+            add_order_to_db("Иванов Иван Иванович", product_id, 1)
+            update_product_quantity(product_id, new_qty)
+            
+            messagebox.showinfo("Успех", "Заказ оформлен")
+            
+            if self.on_add_to_order:
+                self.on_add_to_order()
         except Exception as e:
-            messagebox.showerror("Ошибка заказа", f"Не удалось добавить товар:\n{e}")
+            messagebox.showerror("Ошибка", f"Не удалось оформить заказ{e}")

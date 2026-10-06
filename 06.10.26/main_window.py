@@ -94,7 +94,12 @@ class CatalogWindow:
     def load_products(self):
         products = safe_call(db.get_all_products) or []
         for p in products:
-            safe_call(create_product_card, self.catalog_frame, p)
+            safe_call(create_product_card, self.catalog_frame, p, self.refresh_catalog)
+            
+    def refresh_catalog(self):
+        for widget in self.catalog_frame.winfo_children():
+            widget.destroy()
+        self.load_products()
 
     def run(self):
         self.root.mainloop()

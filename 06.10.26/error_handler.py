@@ -4,13 +4,13 @@ def safe_call(func, *args, **kwargs):
     try:
         return func(*args, **kwargs)
     except FileNotFoundError as e:
-        messagebox.showerror("Ошибка", "Файл не найден:\n{e}")
+        messagebox.showerror("Ошибка", f"Файл не найден:\n{e}")
     except ConnectionError as e:
-        messagebox.showerror("Ошибка", "Ошибка подключения к БД:\n{e}")
+        messagebox.showerror("Ошибка", f"Ошибка подключения к БД:\n{e}")
     except ValueError as e:
-        messagebox.showerror("Ошибка", "Неправильное значение:\n{e}")
+        messagebox.showerror("Ошибка", f"Неправильное значение:\n{e}")
     except Exception as e:
-        messagebox.showerror("Ошибка", "Произошла ошибка:\n{e}")
+        messagebox.showerror("Ошибка", f"Произошла ошибка:\n{e}")
     return None
         
 def validate_positive_int(value, field_name):
