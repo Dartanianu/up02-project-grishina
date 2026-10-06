@@ -53,7 +53,6 @@ def get_last_order_id():
         conn.close()
 
 def get_product_quantity(product_id):
-    # ГОТОВО
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT количество FROM Товар WHERE id = ?", (product_id,))

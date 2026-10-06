@@ -74,7 +74,7 @@ class ViewForm:
         qty_entry = tk.Entry(qty_frame, textvariable=self.qty_var, font=font(FONT_SIZE_NORMAL), width=10)
         qty_entry.pack(side="left")
         
-        #кнопки
+        #КНОПКИ:
         
         #карточка
         btn_frame = tk.Frame(self.window, bg=COLOR_MAIN_BG)
