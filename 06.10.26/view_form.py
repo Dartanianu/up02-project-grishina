@@ -75,13 +75,16 @@ class ViewForm:
         qty_entry.pack(side="left")
         
         #кнопки
+        
+        #карточка
         btn_frame = tk.Frame(self.window, bg=COLOR_MAIN_BG)
         btn_frame.pack(fill="x", pady=10)
         
-
+        #Добавить
         btn_add = tk.Button(btn_frame, text="Добавить в заказ", command=self.add_to_order, bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5)
         btn_add.pack(side="left", padx=20)
 
+        #назад
         btn_back = tk.Button(btn_frame, text="Назад", command=self.window.destroy,bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5)
         btn_back.pack(side="left", padx=20)
     
@@ -117,7 +120,7 @@ class ViewForm:
                 messagebox.showwarning("Внимание", f"В наличии только {qty_now} шт.")
                 return
             
-            new_qty = qty_now - 1
+            new_qty = qty_now - qty
             add_order_to_db("Иванов Иван Иванович", product_id, 1)
             update_product_quantity(product_id, new_qty)
             

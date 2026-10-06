@@ -15,9 +15,11 @@ def safe_call(func, *args, **kwargs):
         
 def validate_positive_int(value, field_name):
     try:
-        i_value = int(value)
-        if i_value <= 0:
-            return (False, f"{field_name} должно быть больше нуля")
-        return (True, i_value)
+        number = int(value)
     except ValueError:
-        return (False, f"{field_name} не целое число")
+        return (False, f"{field_name} должно быть целым числом!")
+
+    if number <= 0:
+        return (False, f"{field_name} должно быть больше нуля")
+
+    return (True, number)
