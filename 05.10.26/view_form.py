@@ -6,6 +6,7 @@ from styles import (
     FONT_SIZE_NORMAL, FONT_SIZE_HEADER, FONT_SIZE_TITLE, FONT_FAMILY, font
 )
 from resources import load_image, get_product_image
+from error_handler import validate_positive_int, safe_call
 
 
 class ViewForm:
@@ -49,14 +50,24 @@ class ViewForm:
         info_frame = tk.Frame(main, bg=COLOR_MAIN_BG)
         info_frame.pack(side="left", fill="both", expand=True, padx=20)
         
-
+        #Информация
         self._add_field(info_frame, "Тип", self.product.name)
         self._add_field(info_frame, "Тренер", self.product.coach)
         self._add_field(info_frame, "Длительность", self.product.time)
         self._add_field(info_frame, "Количество", self.product.qty)
         self._add_field(info_frame, "Цена", self.product.price)
         
-
+        #поле ввода кол-ва
+        qty_frame = tk.Frame(info_frame, bg=COLOR_MAIN_BG)
+        qty_frame.pack(fill="x", pady=(10, 0))
+        
+        tk.Label(qty_frame, text="Количество тренировок:", font=font(FONT_SIZE_HEADER, bold=True), bg=COLOR_MAIN_BG, width=25, anchor="w").pack(side="left")
+        
+        self.qty_var = tk.StringVar(value="1")
+        qty_entry = tk.Entry(qty_frame, textvariable=self.qty_var, font=font(FONT_SIZE_NORMAL), width=10)
+        qty_entry.pack(side="left")
+        
+        #кнопки
         btn_frame = tk.Frame(self.window, bg=COLOR_MAIN_BG)
         btn_frame.pack(fill="x", pady=10)
         
@@ -78,9 +89,14 @@ class ViewForm:
         value_txt.pack(side="left", fill="x", expand=True)
     
     def add_to_order(self):
-
+        ok, result = validate_positive_int(self.qty_var.get(), "Количество")
+        if not ok:
+            messagebox.showerror("Ошибка ввода", result)
+            return
+        qty = result
+        
         if self.on_add_to_order is None:
-            messagebox.showinfo("Информация", "Товар не выбран")
+            messagebox.showinfo("Информация", "В разаботке")
             return
 
         if self.product is None:

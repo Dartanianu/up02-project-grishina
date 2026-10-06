@@ -92,7 +92,7 @@ class CatalogWindow:
 
 
     def load_products(self):
-        products = db.get_all_products()
+        products = safe_call(db.get_all_products) or []
         for p in products:
             safe_call(create_product_card, self.catalog_frame, p)
 
