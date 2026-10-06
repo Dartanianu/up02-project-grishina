@@ -9,14 +9,6 @@ def get_connection():
 
 
 def add_order_to_db(client, product_id, quantity):
-    """
-    Добавляет новый заказ в БД.
-    
-    :param client: ФИО клиента
-    :param product_id: id товара
-    :param quantity: количество
-    :return: id заказа или None при ошибке
-    """
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -34,12 +26,6 @@ def add_order_to_db(client, product_id, quantity):
 
 
 def update_product_quantity(product_id, new_quantity):
-    """
-    Обновляет количество товара в БД.
-    
-    :param product_id: id товара
-    :param new_quantity: новое количество
-    """
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -54,11 +40,6 @@ def update_product_quantity(product_id, new_quantity):
         conn.close()
 
 def get_last_order_id():
-    """
-    Возвращает id последнего заказа.
-    
-    :return: id или None
-    """
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -72,12 +53,6 @@ def get_last_order_id():
         conn.close()
 
 def get_product_quantity(product_id):
-    """
-    Возвращает количество товара по id.
-    
-    :param product_id: id товара
-    :return: количество или 0
-    """
     # ГОТОВО
     conn = get_connection()
     cur = conn.cursor()
