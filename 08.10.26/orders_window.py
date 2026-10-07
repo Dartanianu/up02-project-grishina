@@ -7,7 +7,8 @@ from styles import (
 import order_manager as om
 
 class OrdersWindow:
-    def __init__(self, parent):
+    def __init__(self, parent, current_user=None):
+        self.current_user = current_user
         
         self.window = tk.Toplevel(parent)
         self.window.title("Список заказов")
