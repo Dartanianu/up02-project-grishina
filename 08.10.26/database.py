@@ -1,6 +1,7 @@
 from config import DB_PATH
 import sqlite3
 
+
 def get_user_by_login(login):
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
