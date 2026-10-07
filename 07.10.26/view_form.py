@@ -14,8 +14,6 @@ from order_manager import (
     get_product_quantity
 )
 
-
-
 class ViewForm:
     def __init__(self, parent, product, on_add_to_order=None):
         self.product = product
@@ -29,7 +27,7 @@ class ViewForm:
         self.build_ui()
     
     def build_ui(self):
-        """Строит интерфейс формы."""
+        # Строит интерфейс формы.
         # Шапка
         header = tk.Frame(self.window, bg=COLOR_SECONDARY_BG, height=60)
         header.pack(fill="x")

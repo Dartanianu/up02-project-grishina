@@ -40,6 +40,7 @@ def update_product_quantity(product_id, new_quantity):
     finally:
         conn.close()
 
+
 def get_last_order_id():
     conn = get_connection()
     try:
@@ -53,6 +54,7 @@ def get_last_order_id():
     finally:
         conn.close()
 
+
 def get_product_quantity(product_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -62,7 +64,7 @@ def get_product_quantity(product_id):
     return row[0] if row else 0
 
 
-def add_order_item(order_id, product_id, quantity, price):
+def add_order_item(order_id, product_id, quantity,price):
     conn = get_connection()
     cur = conn.cursor()
     
@@ -77,6 +79,7 @@ def add_order_item(order_id, product_id, quantity, price):
     conn.close
     
     return item_id
+
 
 def create_order(client, items):
     
