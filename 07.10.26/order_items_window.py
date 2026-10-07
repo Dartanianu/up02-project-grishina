@@ -14,7 +14,7 @@ class OrderItemsWindow:
         self.order_id = order_id
         self.window = tk.Toplevel(parent)
         self.window.title(f"Состав заказа №{order_id}")
-        self.window.geometry("700x400")
+        self.window.geometry("850x500")
         self.window.configure(bg=COLOR_MAIN_BG)
 
 
@@ -33,18 +33,20 @@ class OrderItemsWindow:
                  bg=COLOR_SECONDARY_BG).pack(pady=15)
 
 
-        columns = ("name", "quantity", "price", "total")
+        columns = ("name", "coach", "quantity", "price", "total")
         self.tree = ttk.Treeview(self.window, columns=columns,
                                  show="headings", height=10)
 
 
         self.tree.heading("name", text="Товар")
+        self.tree.heading("coach", text="Тренер")
         self.tree.heading("quantity", text="Кол-во")
         self.tree.heading("price", text="Цена")
         self.tree.heading("total", text="Сумма")
 
 
         self.tree.column("name", width=250, anchor="w")
+        self.tree.column("coach", width=120, anchor="w")
         self.tree.column("quantity", width=70, anchor="center")
         self.tree.column("price", width=100, anchor="e")
         self.tree.column("total", width=100, anchor="e")
@@ -62,6 +64,11 @@ class OrderItemsWindow:
         btn_frame = tk.Frame(self.window, bg=COLOR_MAIN_BG)
         btn_frame.pack(fill="x", pady=10)
 
+        tk.Button(btn_frame, text="Обновить",
+                  command=self.load_items,
+                  bg=COLOR_ACCENT, fg="white",
+                  font=font(FONT_SIZE_NORMAL),
+                  padx=15, pady=5).pack(side="left", padx=20)
 
         tk.Button(btn_frame, text="Назад",
                   command=self.window.destroy,
@@ -81,13 +88,13 @@ class OrderItemsWindow:
 
 
             for item in items:
-                name, quantity, price = item[1], item[2], item[3]
+                name, coach, quantity, price = item[1], item[2], item[3], item[4]
                 item_total = quantity * price
                 total += item_total
 
 
                 self.tree.insert("", tk.END,
-                                 values=(name, quantity,
+                                 values=(name, coach, quantity,
                                          f"{price:.2f}", f"{item_total:.2f}"))
 
 

@@ -125,7 +125,9 @@ def get_order_items(order_id):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT Состав_заказа.id, Товар.тип, Состав_заказа.количество, Состав_заказа.цена
+        SELECT
+        Состав_заказа.id, Товар.тип, Товар.тренер,
+        Состав_заказа.количество, Состав_заказа.цена
         FROM Состав_заказа
         JOIN Товар ON Состав_заказа.товар_id = Товар.id
         WHERE Состав_заказа.заказ_id = ?
@@ -133,3 +135,17 @@ def get_order_items(order_id):
     rows = cur.fetchall()
     conn.close()
     return rows
+
+
+def get_order_total(order_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT SUM(количество * цена)
+        FROM Состав_заказа
+        WHERE заказ_id = ?
+    """, (order_id,))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] or 0.0
+
