@@ -10,15 +10,7 @@ import order_manager as om
 
 
 class OrderItemsWindow:
-    """Окно состава заказа."""
-
-
     def __init__(self, parent, order_id):
-        """
-        Инициализация окна.
-        :param parent: родительское окно
-        :param order_id: id заказа
-        """
         self.order_id = order_id
         self.window = tk.Toplevel(parent)
         self.window.title(f"Состав заказа №{order_id}")
@@ -31,8 +23,6 @@ class OrderItemsWindow:
 
 
     def build_ui(self):
-        """Строит интерфейс окна."""
-        # Шапка
         header = tk.Frame(self.window, bg=COLOR_SECONDARY_BG, height=60)
         header.pack(fill="x")
         header.pack_propagate(False)
@@ -43,7 +33,6 @@ class OrderItemsWindow:
                  bg=COLOR_SECONDARY_BG).pack(pady=15)
 
 
-        # Таблица позиций
         columns = ("name", "quantity", "price", "total")
         self.tree = ttk.Treeview(self.window, columns=columns,
                                  show="headings", height=10)
@@ -64,14 +53,12 @@ class OrderItemsWindow:
         self.tree.pack(fill="both", expand=True, padx=20, pady=20)
 
 
-        # Итоговая сумма
         self.total_label = tk.Label(self.window, text="",
                                     font=font(FONT_SIZE_NORMAL, bold=True),
                                     bg=COLOR_MAIN_BG)
         self.total_label.pack(pady=5)
 
 
-        # Кнопки
         btn_frame = tk.Frame(self.window, bg=COLOR_MAIN_BG)
         btn_frame.pack(fill="x", pady=10)
 
@@ -84,13 +71,10 @@ class OrderItemsWindow:
 
 
     def load_items(self):
-        """Загружает позиции заказа из БД."""
-        # Очищаем таблицу
         for row in self.tree.get_children():
             self.tree.delete(row)
 
 
-        # Загружаем позиции
         try:
             items = om.get_order_items(self.order_id)
             total = 0.0

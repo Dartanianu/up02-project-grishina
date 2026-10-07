@@ -120,6 +120,7 @@ def get_all_orders():
     conn.close()
     return rows
 
+
 def get_order_items(order_id):
     conn = get_connection()
     cur = conn.cursor()

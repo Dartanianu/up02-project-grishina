@@ -7,7 +7,6 @@ from styles import (
 import order_manager as om
 
 class OrdersWindow:
-    
     def __init__(self, parent):
         
         self.window = tk.Toplevel(parent)
@@ -17,6 +16,7 @@ class OrdersWindow:
         
         self.build_ui()
         self.load_orders()
+    
     
     def build_ui(self):
         header = tk.Frame(self.window, bg=COLOR_SECONDARY_BG, height=60)
@@ -51,6 +51,7 @@ class OrdersWindow:
         tk.Button(btn_frame, text="Обновить", command=self.load_orders, bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5).pack(side="left", padx=20)
         
         tk.Button(btn_frame, text="Назад", command=self.window.destroy, bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5).pack(side="left", padx=20)
+       
         
     def load_orders(self):
         for row in self.tree.get_children():
