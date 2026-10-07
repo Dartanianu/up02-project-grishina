@@ -110,3 +110,25 @@ def create_order(client, items):
         return None
     finally:
         conn.close()
+
+
+def get_all_orders():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT id, дата, клиент, товар_id FROM Заказ ORDER BY id DESC")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def get_order_items(order_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT Состав_заказа.id, Товар.тип, Состав_заказа.количество, Состав_заказа.цена
+        FROM Состав_заказа
+        JOIN Товар ON Состав_заказа.товар_id = Товар.id
+        WHERE Состав_заказа.заказ_id = ?
+    """, (order_id,))
+    rows = cur.fetchall()
+    conn.close()
+    return rows

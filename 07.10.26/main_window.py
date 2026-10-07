@@ -3,7 +3,7 @@ from tkinter import ttk
 import os
 from PIL import Image, ImageTk
 from config import APP_TITLE
-from styles import COLOR_SECONDARY_BG, FONT_FAMILY, FONT_SIZE_TITLE, font
+from styles import COLOR_SECONDARY_BG, FONT_FAMILY, COLOR_ACCENT,FONT_SIZE_NORMAL, font
 import db_products as db
 from catalog import create_product_card
 from resources import load_image_proportional, PATH_LOGO, PATH_ICON
@@ -73,6 +73,12 @@ class CatalogWindow:
         self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        tk.Button(header, text="Заказы", command=self.open_orders,
+          bg=COLOR_ACCENT, fg="white",
+          font=font(FONT_SIZE_NORMAL),
+          padx=10, pady=5).pack(side="right", padx=10)
+
+        
     def set_app_icon(self, root, icon_path):
         import os
         from resources import load_image_proportional
@@ -95,6 +101,10 @@ class CatalogWindow:
         products = safe_call(db.get_all_products) or []
         for p in products:
             safe_call(create_product_card, self.catalog_frame, p, self.refresh_catalog)
+            
+    def open_orders(self):
+        from orders_window import OrdersWindow
+        OrdersWindow(self.root)
             
     def refresh_catalog(self):
         for widget in self.catalog_frame.winfo_children():
