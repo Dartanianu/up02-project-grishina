@@ -9,15 +9,7 @@ from datetime import datetime
 
 
 class OrderItemsWindow:
-    """Окно состава заказа."""
-
     def __init__(self, parent, order_id, current_user=None):
-        """
-        Инициализация окна.
-        :param parent: родительское окно
-        :param order_id: id заказа
-        :param current_user: текущий пользователь
-        """
         self.order_id = order_id
         self.current_user = current_user
 
@@ -78,23 +70,18 @@ class OrderItemsWindow:
         self.client_label.pack(side="left")
 
         # Таблица позиций
-        columns = ("id", "name", "production", "size",
-                   "quantity", "price", "total")
+        columns = ("id", "name", "quantity", "price", "total")
         self.tree = ttk.Treeview(self.window, columns=columns,
                                  show="headings", height=12)
 
         self.tree.heading("id", text="№")
         self.tree.heading("name", text="Товар")
-        self.tree.heading("production", text="Производство")
-        self.tree.heading("size", text="Размер")
         self.tree.heading("quantity", text="Кол-во")
         self.tree.heading("price", text="Цена")
         self.tree.heading("total", text="Сумма")
 
         self.tree.column("id", width=40, anchor="center")
         self.tree.column("name", width=180, anchor="w")
-        self.tree.column("production", width=110, anchor="w")
-        self.tree.column("size", width=60, anchor="center")
         self.tree.column("quantity", width=60, anchor="center")
         self.tree.column("price", width=90, anchor="e")
         self.tree.column("total", width=90, anchor="e")
@@ -154,14 +141,12 @@ class OrderItemsWindow:
             for item in items:
                 item_id = item[0]
                 name = item[1]
-                production = item[2]
-                size = item[3]
-                quantity = item[4]
-                price = item[5]
+                quantity = item[2]
+                price = item[3]
                 item_total = quantity * price
 
                 self.tree.insert("", tk.END,
-                                 values=(item_id, name, production, size,
+                                 values=(item_id, name,
                                          quantity,
                                          f"{price:.2f}",
                                          f"{item_total:.2f}"))

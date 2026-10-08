@@ -127,7 +127,6 @@ def get_order_items(order_id):
     cur.execute("""
         SELECT
         Состав_заказа.id, Товар.тип,
-        Товар.тренер,
         Состав_заказа.количество,
         Состав_заказа.цена
         FROM Состав_заказа
@@ -172,11 +171,6 @@ def update_order_date(order_id, new_date):
         conn.close()
 
 def delete_order_item(item_id):
-    """
-    Удаляет позицию из состава заказа.
-    :param item_id: id позиции
-    :return: True при успехе, False при ошибке
-    """
     conn = get_connection()
     cur = conn.cursor()
 
@@ -217,11 +211,6 @@ def delete_order_item(item_id):
 
      
 def get_order_by_id(order_id):
-    """
-    Возвращает заказ по id.
-    :param order_id: id заказа
-    :return: кортеж (id, дата, клиент) или None
-    """
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT id, дата, клиент FROM Заказ WHERE id = ?",

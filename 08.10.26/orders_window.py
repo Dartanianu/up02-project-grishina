@@ -76,4 +76,4 @@ class OrdersWindow:
         order_id = item["values"][0]
         
         from order_items_window import OrderItemsWindow
-        OrderItemsWindow(self.window, order_id)
+        OrderItemsWindow(self.window, order_id, self.current_user)
