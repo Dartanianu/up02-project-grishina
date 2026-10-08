@@ -5,7 +5,7 @@ from styles import (
     COLOR_MAIN_BG, COLOR_SECONDARY_BG, COLOR_ACCENT,
     FONT_SIZE_NORMAL, FONT_SIZE_HEADER, FONT_SIZE_TITLE, FONT_FAMILY, font
 )
-from resources import load_image, get_product_image
+from resources import get_product_image
 from error_handler import validate_positive_int
 
 from order_manager import (
