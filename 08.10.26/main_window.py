@@ -26,6 +26,7 @@ class MainWindow:
         self.load_products()
         self.require_auth()
 
+
     def build_ui(self):
         """Строит интерфейс окна."""
         # Шапка
@@ -70,10 +71,12 @@ class MainWindow:
         self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
+
     def require_auth(self):
         """Запрашивает авторизацию."""
         from auth import AuthWindow
         AuthWindow(self.root, self.on_auth_success)
+
 
     def on_auth_success(self, user):
         """
@@ -88,6 +91,7 @@ class MainWindow:
 
         # Добавляем кнопки в зависимости от роли
         self.add_role_buttons(user[5])
+
 
     def add_role_buttons(self, role):
         """
@@ -110,15 +114,18 @@ class MainWindow:
                       font=font(FONT_SIZE_NORMAL),
                       padx=10, pady=5).pack(side="right", padx=10)
 
+
     def open_orders(self):
         """Открывает окно списка заказов."""
         from orders_window import OrdersWindow
         OrdersWindow(self.root, self.current_user)
 
+
     def open_admin(self):
         """Открывает админ-панель."""
         from admin_panel import AdminPanel
         AdminPanel(self.root, self.current_user)
+
 
     def load_products(self):
         """Загружает товары в каталог."""
@@ -127,11 +134,13 @@ class MainWindow:
             create_product_card(self.catalog_frame, p,
                                 refresh=self.refresh_catalog)
 
+
     def refresh_catalog(self):
         """Обновляет каталог."""
         for widget in self.catalog_frame.winfo_children():
             widget.destroy()
         self.load_products()
+
 
     def run(self):
         """Запускает приложение."""

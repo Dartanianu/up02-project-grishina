@@ -150,6 +150,7 @@ def get_order_total(order_id):
     conn.close()
     return row[0] or 0.0
 
+
 def update_order_date(order_id, new_date):
     conn = get_connection()
     cur = conn.cursor()
@@ -169,6 +170,7 @@ def update_order_date(order_id, new_date):
 
     finally:
         conn.close()
+
 
 def delete_order_item(item_id):
     conn = get_connection()
@@ -208,7 +210,7 @@ def delete_order_item(item_id):
 
     finally:
         conn.close()
-
+ 
      
 def get_order_by_id(order_id):
     conn = get_connection()

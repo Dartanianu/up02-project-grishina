@@ -28,6 +28,7 @@ class AuthWindow:
 
         self.build_ui()
 
+
     def build_ui(self):
         """Строит интерфейс окна."""
         # Шапка
@@ -61,16 +62,17 @@ class AuthWindow:
                  font=font(FONT_SIZE_NORMAL),
                  fg="gray", bg=COLOR_MAIN_BG).pack()
 
+
     def login(self):
         """Обработчик входа."""
         login = self.login_var.get().strip()
-
+        # Обработка ошибки
         if not login:
             messagebox.showwarning("Ошибка", "Введите логин")
             return
 
         user = get_user_by_login(login)
-
+        # Обработка ошибки
         if not user:
             messagebox.showerror("Ошибка", "Пользователь не найден")
             return

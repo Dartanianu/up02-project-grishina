@@ -15,6 +15,7 @@ def _open_view(parent, product, refresh=None):
     from view_form import ViewForm
     ViewForm(parent, product, on_add_to_order=refresh)
 
+
 def create_product_card(parent, product, refresh=None):
     qty = product.qty
     bg_color = _get_card_color(qty)
@@ -40,6 +41,7 @@ def create_product_card(parent, product, refresh=None):
 def _get_card_color(qty):
     return COLOR_HIGHLIGHT if qty <= 5 else COLOR_MAIN_BG
 
+
 def _add_image(card, product, bg_color):
     # изображение (слева)
     img_frame = tk.Frame(card, bg=bg_color)
@@ -52,6 +54,7 @@ def _add_image(card, product, bg_color):
         img_label.pack()
     else:
         tk.Label(img_frame, text="[НЕТ ФОТО]", bg=bg_color, width=10, height=5).pack()
+
 
 def _add_text_info(card, product, bg_color, qty, on_view=None):
     text_frame = tk.Frame(card, bg=bg_color)

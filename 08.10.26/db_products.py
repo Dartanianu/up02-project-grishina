@@ -25,8 +25,6 @@ def get_all_products():
     return products
 
 
-
-
 def get_products_by_category(trener):
     conn = sqlite3.connect()
     cur = conn.cursor(DB_PATH)

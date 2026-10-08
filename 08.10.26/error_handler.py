@@ -12,6 +12,7 @@ def safe_call(func, *args, **kwargs):
     except Exception as e:
         messagebox.showerror("Ошибка", f"Произошла ошибка:\n{e}")
     return None
+      
         
 def validate_positive_int(value, field_name):
     try:

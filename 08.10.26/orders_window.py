@@ -7,6 +7,7 @@ from styles import (
 import order_manager as om
 
 class OrdersWindow:
+    
     def __init__(self, parent, current_user=None):
         self.current_user = current_user
         
@@ -51,8 +52,8 @@ class OrdersWindow:
         
         tk.Button(btn_frame, text="Обновить", command=self.load_orders, bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5).pack(side="left", padx=20)
         
-        tk.Button(btn_frame, text="Назад", command=self.window.destroy, bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5).pack(side="left", padx=20)
-       
+        tk.Button(btn_frame, text="Назад", command=self.window.destroy, bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5).pack(side="left", padx=20) 
+        
         
     def load_orders(self):
         for row in self.tree.get_children():
@@ -64,7 +65,7 @@ class OrdersWindow:
                 self.tree.insert("", tk.END, values=order)
         except Exception as e:
             messagebox.showerror("Ошибка", f"Не удалось загрузить заказы:\n{e}")
-       
+        
             
     def on_order_select(self, event=None):
         selected = self.tree.selection()

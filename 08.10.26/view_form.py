@@ -15,6 +15,7 @@ from order_manager import (
 )
 
 class ViewForm:
+    
     def __init__(self, parent, product, on_add_to_order=None):
         self.product = product
         self.on_add_to_order = on_add_to_order
@@ -25,6 +26,7 @@ class ViewForm:
         self.window.configure(bg=COLOR_MAIN_BG)
         
         self.build_ui()
+    
     
     def build_ui(self):
         # Строит интерфейс формы.
@@ -86,6 +88,7 @@ class ViewForm:
         btn_back = tk.Button(btn_frame, text="Назад", command=self.window.destroy,bg=COLOR_ACCENT, fg="white", font=font(FONT_SIZE_NORMAL), padx=15, pady=5)
         btn_back.pack(side="left", padx=20)
     
+    
     def _add_field(self, parent, label, value):
         row = tk.Frame(parent, bg=COLOR_MAIN_BG)
         row.pack(fill="x", pady=3)
@@ -95,6 +98,7 @@ class ViewForm:
         value_txt = tk.Label(row, text=str(value), font=font(FONT_SIZE_NORMAL),
         anchor="w", justify="left", wraplength=300, bg=COLOR_MAIN_BG)
         value_txt.pack(side="left", fill="x", expand=True)
+    
     
     def add_to_order(self):
         ok, result = validate_positive_int(self.qty_var.get(), "Количество")

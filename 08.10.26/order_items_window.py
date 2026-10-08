@@ -9,6 +9,7 @@ from datetime import datetime
 
 
 class OrderItemsWindow:
+    
     def __init__(self, parent, order_id, current_user=None):
         self.order_id = order_id
         self.current_user = current_user
@@ -22,10 +23,12 @@ class OrderItemsWindow:
         self.load_order_info()
         self.load_items()
 
+
     def is_admin(self):
         """Проверяет, является ли пользователь Администратором."""
         return (self.current_user and
                 self.current_user[5] == "Администратор")
+
 
     def build_ui(self):
         """Строит интерфейс окна."""
@@ -118,12 +121,14 @@ class OrderItemsWindow:
                   font=font(FONT_SIZE_NORMAL),
                   padx=15, pady=5).pack(side="right", padx=20)
 
+
     def load_order_info(self):
         """Загружает информацию о заказе."""
         order = om.get_order_by_id(self.order_id)
         if order:
             self.date_var.set(order[1])
             self.client_label.config(text=order[2])
+
 
     def load_items(self):
         """Загружает позиции заказа."""
@@ -158,6 +163,7 @@ class OrderItemsWindow:
             messagebox.showerror("Ошибка",
                                  f"Не удалось загрузить состав:\n{e}")
 
+
     def save_date(self):
         """Сохраняет изменённую дату."""
         new_date = self.date_var.get().strip()
@@ -174,6 +180,7 @@ class OrderItemsWindow:
             messagebox.showinfo("Успех", "Дата обновлена")
         else:
             messagebox.showerror("Ошибка", "Не удалось обновить дату")
+
 
     def delete_item(self):
         """Удаляет выбранную позицию."""
@@ -194,6 +201,7 @@ class OrderItemsWindow:
             self.refresh_all()
         else:
             messagebox.showerror("Ошибка", "Не удалось удалить позицию")
+
 
     def refresh_all(self):
         """Обновляет всю информацию."""
